@@ -7,7 +7,7 @@ public class Enemyscript : MonoBehaviour
 
     public float basespeed;
     public float basez;
-    private float multiplier=1f;
+    public float multiplier=1f;
 
     public float basex;
     public float basey;
@@ -26,8 +26,21 @@ public class Enemyscript : MonoBehaviour
         GetComponent<Rigidbody>().velocity = new Vector3(0,0,-basespeed)*multiplier;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Destroy(this.gameObject);
+        if(!other.transform.GetComponent<Enemyscript>())
+        {
+            if (!other.transform.CompareTag("Player"))
+            {
+                GameObject.Find("playercube").GetComponent<Playescript>().score++;
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                GameObject.Find("playercube").GetComponent<Playescript>().lives--;
+                Destroy(this.gameObject);
+            }
+        }
+        
     }
 }

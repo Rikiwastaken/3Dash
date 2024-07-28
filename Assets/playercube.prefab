@@ -129,8 +129,24 @@ MonoBehaviour:
   xlimit: 0.6
   ylimit: 0.6
   multiplicateur: 10
-  timebetweenspawn: 3
+  timebetweenspawn: 1.5
   EnemyCube: {fileID: 2985383379182647746, guid: c783e5a7b09580148b0897bf14bd0bae, type: 3}
+  score: 0
+  lives: 3
+  scoretxt: {fileID: 0}
+  livestxt: {fileID: 0}
+  leveltxt: {fileID: 0}
+  materials:
+  - {fileID: 2100000, guid: 5f8d09d0a15891748aacbccbddf94438, type: 2}
+  - {fileID: 2100000, guid: a3b0a0dd1840c954bb8aa7823f1a8ebe, type: 2}
+  - {fileID: 2100000, guid: 5f8d09d0a15891748aacbccbddf94438, type: 2}
+  - {fileID: 2100000, guid: a3b0a0dd1840c954bb8aa7823f1a8ebe, type: 2}
+  - {fileID: 2100000, guid: 5f8d09d0a15891748aacbccbddf94438, type: 2}
+  - {fileID: 2100000, guid: a3b0a0dd1840c954bb8aa7823f1a8ebe, type: 2}
+  - {fileID: 2100000, guid: 5f8d09d0a15891748aacbccbddf94438, type: 2}
+  - {fileID: 2100000, guid: a3b0a0dd1840c954bb8aa7823f1a8ebe, type: 2}
+  - {fileID: 2100000, guid: 5f8d09d0a15891748aacbccbddf94438, type: 2}
+  - {fileID: 2100000, guid: a3b0a0dd1840c954bb8aa7823f1a8ebe, type: 2}
 --- !u!54 &1473281496929451150
 Rigidbody:
   m_ObjectHideFlags: 0

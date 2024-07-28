@@ -129,6 +129,8 @@ MonoBehaviour:
   xlimit: 0.6
   ylimit: 0.6
   multiplicateur: 10
+  timebetweenspawn: 3
+  EnemyCube: {fileID: 2985383379182647746, guid: c783e5a7b09580148b0897bf14bd0bae, type: 3}
 --- !u!54 &1473281496929451150
 Rigidbody:
   m_ObjectHideFlags: 0

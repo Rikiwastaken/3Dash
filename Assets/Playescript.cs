@@ -12,6 +12,8 @@ public class Playescript : MonoBehaviour
     public InputActionReference start;
 
     public int speedmode;
+
+    private int level=1;
     
 
     public float xlimit;
@@ -23,18 +25,21 @@ public class Playescript : MonoBehaviour
 
     public float multiplicateur;
 
+    private int spawncdcntr;
+    public int timebetweenspawn;
 
+    public GameObject EnemyCube;
 
     // Start is called before the first frame update
     void Start()
     {
         movement.action.performed += OnMovementChange;
         nextpos = transform.position;
+        Application.targetFrameRate = 120;
     }
 
     public void OnMovementChange(InputAction.CallbackContext context)
     {
-        Debug.Log("dzqqzdqd");
         movementinput = context.ReadValue<Vector2>();
     }
 
@@ -45,8 +50,6 @@ public class Playescript : MonoBehaviour
         {
             transform.position = nextpos;
         }
-
-        Debug.Log(movementinput);
 
         if(transform.position == nextpos)
         {
@@ -72,7 +75,50 @@ public class Playescript : MonoBehaviour
             GetComponent<Rigidbody>().velocity=((nextpos - transform.position)*multiplicateur);
         }
 
+        if(spawncdcntr==0)
+        {
+            SpawnEnemywave(level);
+            spawncdcntr = (int)(timebetweenspawn/(Time.deltaTime*level));
+        }
+        else
+        {
+            spawncdcntr--;
+        }
 
+    }
 
+    private void SpawnEnemywave(int level)
+    {
+        if (level == 1)
+        {
+            GameObject newcube = Instantiate(EnemyCube);
+            int rdint = Random.Range(-1, 1);
+            if(rdint == -1)
+            {
+                newcube.GetComponent<Enemyscript>().basex = -0.6f;
+            }
+            else if(rdint == 1)
+            {
+                newcube.GetComponent<Enemyscript>().basex = 0.6f;
+            }
+            else
+            {
+                newcube.GetComponent<Enemyscript>().basex = 0f;
+            }
+            rdint = Random.Range(-1, 1);
+            if (rdint == -1)
+            {
+                newcube.GetComponent<Enemyscript>().basey = -0.6f;
+            }
+            else if (rdint == 1)
+            {
+                newcube.GetComponent<Enemyscript>().basey = 0.6f;
+            }
+            else
+            {
+                newcube.GetComponent<Enemyscript>().basey = 0f;
+            }
+        }
+        
     }
 }

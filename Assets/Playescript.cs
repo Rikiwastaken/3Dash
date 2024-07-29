@@ -61,6 +61,13 @@ public class Playescript : MonoBehaviour
 
     public GameObject gameover;
 
+    private List<GameObject> walllist;
+
+    public int blinking;
+
+    public int blinkingcnt;
+    private bool inv;
+
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -73,7 +80,7 @@ public class Playescript : MonoBehaviour
         start.action.performed += OnStartPress;
         nextpos = transform.position;
         generatematerials();
-
+        walllist = new List<GameObject>();
 
     }
 
@@ -90,6 +97,37 @@ public class Playescript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if(blinking>0)
+        {
+            blinking--;
+            if (blinkingcnt > 0)
+            {
+                blinkingcnt--;
+                
+            }
+            if (blinkingcnt == 0)
+            {
+                blinkingcnt = (int)(0.2f / Time.deltaTime);
+                inv=!inv;
+            }
+        }
+        else
+        {
+            blinkingcnt = 0;
+            inv=false;
+        }
+
+        if(inv)
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+        }
+
+
 
         if(lives<=0)
         {
@@ -154,6 +192,11 @@ public class Playescript : MonoBehaviour
 
         level = (int)(generation / 10) + 2;
 
+    }
+
+    public void StartIFrame()
+    {
+        blinking =(int)(2/Time.deltaTime);
     }
 
     private void SpawnEnemywave(int level)
@@ -569,7 +612,7 @@ public class Playescript : MonoBehaviour
 
     private void MoveWall(int level, float speed)
     {
-        float scale = (float)(100 - level) / 100;
+        float scale = (float)(300 - level) / 300;
         GameObject newwall = Instantiate(wallprefab, new Vector3(0, 0, basez), Quaternion.identity);
         newwall.transform.localScale= new Vector3 (scale, scale, scale);
         int Randint = UnityEngine.Random.Range(0, materials.Count);
@@ -587,6 +630,15 @@ public class Playescript : MonoBehaviour
         }
         newwall.GetComponent<wallscript>().speed = speed;
         newwall.GetComponent<wallscript>().moving = true;
+
+        if(walllist.Count >= 5)
+        {
+            Destroy(walllist[0]);
+            
+        }
+
+        walllist.Add(newwall);
+
     }
 
     private void generatematerials()

@@ -57,9 +57,10 @@ public class Enemyscript : MonoBehaviour
             }
             else
             {
-                if(GameObject.Find("playercube").GetComponent<Playescript>().lives>0)
+                if(GameObject.Find("playercube").GetComponent<Playescript>().lives>0 && GameObject.Find("playercube").GetComponent<Playescript>().blinking<=0)
                 {
                     GameObject.Find("playercube").GetComponent<Playescript>().lives--;
+                    GameObject.Find("playercube").GetComponent<Playescript>().StartIFrame();
                 }
                 Destroy(this.gameObject);
             }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Playescript : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class Playescript : MonoBehaviour
 
     public GameObject EnemyCube;
 
+    public GameObject wallprefab;
+
     public int score;
 
     public int lives = 3;
@@ -52,6 +55,12 @@ public class Playescript : MonoBehaviour
 
     private bool wall1next;
 
+    public float basez;
+
+    private int lastindex;
+
+    public GameObject gameover;
+
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -61,8 +70,11 @@ public class Playescript : MonoBehaviour
     void Start()
     {
         movement.action.performed += OnMovementChange;
+        start.action.performed += OnStartPress;
         nextpos = transform.position;
-        
+        generatematerials();
+
+
     }
 
     public void OnMovementChange(InputAction.CallbackContext context)
@@ -70,11 +82,21 @@ public class Playescript : MonoBehaviour
         movementinput = context.ReadValue<Vector2>();
     }
 
+    public void OnStartPress(InputAction.CallbackContext context)
+    {
+        Application.Quit();
+    }
+
     // Update is called once per frame
     void Update()
     {
 
-        if(lastlvl !=level)
+        if(lives<=0)
+        {
+            gameover.SetActive(true);
+        }
+
+        if(lastlvl !=level && lives>0)
         {
             lastlvl = level;
             if(level==1)
@@ -110,14 +132,18 @@ public class Playescript : MonoBehaviour
 
         ManageMovement();
 
-        if (spawncdcntr==0)
+        if (spawncdcntr==0 && lives>0)
         {
             generation++;
             SpawnEnemywave(level);
             spawncdcntr = (int)(timebetweenspawn/(Time.deltaTime));
-            if(level>2)
+            if(level>2 && level<=15)
             {
                 spawncdcntr = (int)(spawncdcntr / level) * 2;
+            }
+            else if(level>15)
+            {
+                spawncdcntr = (int)(spawncdcntr / 15) * 2;
             }
 
         }
@@ -268,7 +294,7 @@ public class Playescript : MonoBehaviour
             transform.position = nextpos;
         }
 
-        if (transform.position == nextpos)
+        if (transform.position == nextpos && lives>0)
         {
             if (nextpos.y == -ylimit && movementinput.y > 0)
             {
@@ -295,162 +321,168 @@ public class Playescript : MonoBehaviour
 
     private GameObject SpawnACube()
     {
-        GameObject newcube = Instantiate(EnemyCube);
+        
         int rdint = UnityEngine.Random.Range(-1, 2);
-        Debug.Log(rdint);
+        Vector3 newposition = new Vector3(0, 0, basez);
         if (rdint == -1)
         {
-            newcube.GetComponent<Enemyscript>().basex = -0.6f;
+            newposition.x = -0.6f;
         }
         else if (rdint == 1)
         {
-            newcube.GetComponent<Enemyscript>().basex = 0.6f;
+            newposition.x = 0.6f;
         }
         else
         {
-            newcube.GetComponent<Enemyscript>().basex = 0f;
+            newposition.x = 0f;
         }
         rdint = UnityEngine.Random.Range(-1, 2);
         if (rdint == -1)
         {
-            newcube.GetComponent<Enemyscript>().basey = -0.6f;
+            newposition.y = -0.6f;
         }
         else if (rdint == 1)
         {
-            newcube.GetComponent<Enemyscript>().basey = 0.6f;
+            newposition.y = 0.6f;
         }
-        else if (newcube.GetComponent<Enemyscript>().basex != 0f)
+        else if (newposition.x != 0f)
         {
-            newcube.GetComponent<Enemyscript>().basey = 0f;
+            newposition.y = 0f;
         }
         else
         {
-            newcube.GetComponent<Enemyscript>().basey = 0.6f;
+            newposition.y = 0.6f;
         }
+        GameObject newcube = Instantiate(EnemyCube, newposition,Quaternion.identity);
         return newcube;
     }
 
     private List<GameObject> SpawnALineOf2()
     {
         List<GameObject> list = new List<GameObject>();
-        GameObject newcube = Instantiate(EnemyCube);
+        Vector3 newposition = new Vector3(0, 0, basez);
         int rdint = UnityEngine.Random.Range(0, 3);
         if (rdint == 0)
         {
-            newcube.GetComponent<Enemyscript>().basex = -0.6f;
+            newposition.x = -0.6f;
         }
         else if (rdint == 1)
         {
-            newcube.GetComponent<Enemyscript>().basex = 0.6f;
+            newposition.x = 0.6f;
         }
         else
         {
-            newcube.GetComponent<Enemyscript>().basex = 0f;
+            newposition.x = 0f;
         }
         rdint = UnityEngine.Random.Range(0, 3);
         if (rdint == 0)
         {
-            newcube.GetComponent<Enemyscript>().basey = -0.6f;
+            newposition.y = -0.6f;
         }
         else if (rdint == 1)
         {
-            newcube.GetComponent<Enemyscript>().basey = 0.6f;
+            newposition.y = 0.6f;
         }
-        else if (newcube.GetComponent<Enemyscript>().basex != 0f)
+        else if (newposition.x != 0f)
         {
-            newcube.GetComponent<Enemyscript>().basey = 0f;
+            newposition.y = 0f;
         }
         else
         {
-            newcube.GetComponent<Enemyscript>().basey = 0.6f;
+            newposition.y = 0.6f;
         }
+
+        GameObject newcube = Instantiate(EnemyCube, newposition, Quaternion.identity);
+
         list.Add(newcube);
 
-
-        GameObject othercube = Instantiate(EnemyCube);
+        Vector3 otherposition = new Vector3(0, 0, basez);
 
         rdint = UnityEngine.Random.Range(0, 2);
 
         if(rdint == 0)
         {
-            othercube.GetComponent<Enemyscript>().basex = newcube.GetComponent<Enemyscript>().basex;
+            otherposition.x = newposition.x;
 
 
             rdint = UnityEngine.Random.Range(0, 2);
-            if(newcube.GetComponent<Enemyscript>().basey==-0.6f)
+            if(newposition.y ==-0.6f)
             {
                 if(rdint==0)
                 {
-                    othercube.GetComponent<Enemyscript>().basey = 0f;
+                    otherposition.y = 0f;
                 }
                 else
                 {
-                    othercube.GetComponent<Enemyscript>().basey = 0.6f;
+                    otherposition.y = 0.6f;
                 }
             }
-            else if (newcube.GetComponent<Enemyscript>().basey == 0.6f)
+            else if (newposition.y == 0.6f)
             {
                 if (rdint == 0)
                 {
-                    othercube.GetComponent<Enemyscript>().basey = 0f;
+                    otherposition.y = 0f;
                 }
                 else
                 {
-                    othercube.GetComponent<Enemyscript>().basey = -0.6f;
+                    otherposition.y = -0.6f;
                 }
             }
             else
             {
                 if (rdint == 0)
                 {
-                    othercube.GetComponent<Enemyscript>().basey = 0.6f;
+                    otherposition.y = 0.6f;
                 }
                 else
                 {
-                    othercube.GetComponent<Enemyscript>().basey = -0.6f;
+                    otherposition.y = -0.6f;
                 }
             }
 
         }
         else
         {
-            othercube.GetComponent<Enemyscript>().basey = newcube.GetComponent<Enemyscript>().basey;
+            otherposition.y = newposition.y;
 
             rdint = UnityEngine.Random.Range(0, 2);
-            if (newcube.GetComponent<Enemyscript>().basex == -0.6f)
+            if (newposition.x == -0.6f)
             {
-                if (rdint == 0 && othercube.GetComponent<Enemyscript>().basey !=0f)
+                if (rdint == 0 && otherposition.y !=0f)
                 {
-                    othercube.GetComponent<Enemyscript>().basex = 0f;
+                    otherposition.x = 0f;
                 }
                 else
                 {
-                    othercube.GetComponent<Enemyscript>().basex = 0.6f;
+                    otherposition.x = 0.6f;
                 }
             }
-            else if (newcube.GetComponent<Enemyscript>().basex == 0.6f)
+            else if (newposition.x == 0.6f)
             {
-                if (rdint == 0 && othercube.GetComponent<Enemyscript>().basey != 0f)
+                if (rdint == 0 && otherposition.y != 0f)
                 {
-                    othercube.GetComponent<Enemyscript>().basex = 0f;
+                    otherposition.x = 0f;
                 }
                 else
                 {
-                    othercube.GetComponent<Enemyscript>().basex = -0.6f;
+                    otherposition.x = -0.6f;
                 }
             }
             else
             {
                 if (rdint == 0)
                 {
-                    othercube.GetComponent<Enemyscript>().basex = 0.6f;
+                    otherposition.x = 0.6f;
                 }
                 else
                 {
-                    othercube.GetComponent<Enemyscript>().basex = -0.6f;
+                    otherposition.x = -0.6f;
                 }
             }
         }
+
+        GameObject othercube = Instantiate(EnemyCube, otherposition, Quaternion.identity);
+
 
         list.Add(othercube);
 
@@ -465,17 +497,14 @@ public class Playescript : MonoBehaviour
 
         if(rdint == 0)
         {
-            GameObject obj1 = Instantiate(EnemyCube);
-            obj1.GetComponent<Enemyscript>().basex = 0.6f;
-            obj1.GetComponent<Enemyscript>().basey = -0.6f;
+            Vector3 newposition = new Vector3(0.6f, 0.6f, basez);
+            GameObject obj1 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
-            GameObject obj2 = Instantiate(EnemyCube);
-            obj2.GetComponent<Enemyscript>().basex = 0.6f;
-            obj2.GetComponent<Enemyscript>().basey = 0f;
+            newposition = new Vector3(0.6f, 0f, basez);
+            GameObject obj2 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
-            GameObject obj3 = Instantiate(EnemyCube);
-            obj3.GetComponent<Enemyscript>().basex = 0.6f;
-            obj3.GetComponent<Enemyscript>().basey = 0.6f;
+            newposition = new Vector3(0.6f, -0.6f, basez);
+            GameObject obj3 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
             list.Add(obj1);
             list.Add(obj2);
@@ -484,17 +513,16 @@ public class Playescript : MonoBehaviour
         }
         else if (rdint == 1)
         {
-            GameObject obj1 = Instantiate(EnemyCube);
-            obj1.GetComponent<Enemyscript>().basex = -0.6f;
-            obj1.GetComponent<Enemyscript>().basey = -0.6f;
 
-            GameObject obj2 = Instantiate(EnemyCube);
-            obj2.GetComponent<Enemyscript>().basex = -0.6f;
-            obj2.GetComponent<Enemyscript>().basey = 0f;
+            Vector3 newposition = new Vector3(-0.6f, 0.6f, basez);
+            GameObject obj1 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
-            GameObject obj3 = Instantiate(EnemyCube);
-            obj3.GetComponent<Enemyscript>().basex = -0.6f;
-            obj3.GetComponent<Enemyscript>().basey = 0.6f;
+            newposition = new Vector3(-0.6f, 0f, basez);
+            GameObject obj2 = Instantiate(EnemyCube, newposition, Quaternion.identity);
+
+            newposition = new Vector3(-0.6f, -0.6f, basez);
+            GameObject obj3 = Instantiate(EnemyCube, newposition, Quaternion.identity);
+
 
             list.Add(obj1);
             list.Add(obj2);
@@ -502,17 +530,17 @@ public class Playescript : MonoBehaviour
 
         } else if (rdint == 2)
         {
-            GameObject obj1 = Instantiate(EnemyCube);
-            obj1.GetComponent<Enemyscript>().basey = 0.6f;
-            obj1.GetComponent<Enemyscript>().basex = -0.6f;
 
-            GameObject obj2 = Instantiate(EnemyCube);
-            obj2.GetComponent<Enemyscript>().basey = 0.6f;
-            obj2.GetComponent<Enemyscript>().basex = 0f;
+            Vector3 newposition = new Vector3(0.6f, 0.6f, basez);
+            GameObject obj1 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
-            GameObject obj3 = Instantiate(EnemyCube);
-            obj3.GetComponent<Enemyscript>().basey = 0.6f;
-            obj3.GetComponent<Enemyscript>().basex = 0.6f;
+            newposition = new Vector3(0, 0.6f, basez);
+            GameObject obj2 = Instantiate(EnemyCube, newposition, Quaternion.identity);
+
+            newposition = new Vector3(-0.6f, 0.6f, basez);
+            GameObject obj3 = Instantiate(EnemyCube, newposition, Quaternion.identity);
+
+
             list.Add(obj1);
             list.Add(obj2);
             list.Add(obj3);
@@ -520,17 +548,15 @@ public class Playescript : MonoBehaviour
         }
         else
         {
-            GameObject obj1 = Instantiate(EnemyCube);
-            obj1.GetComponent<Enemyscript>().basey = -0.6f;
-            obj1.GetComponent<Enemyscript>().basex = -0.6f;
+            Vector3 newposition = new Vector3(0.6f, -0.6f, basez);
+            GameObject obj1 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
-            GameObject obj2 = Instantiate(EnemyCube);
-            obj2.GetComponent<Enemyscript>().basey = -0.6f;
-            obj2.GetComponent<Enemyscript>().basex = 0f;
+            newposition = new Vector3(0f, -0.6f, basez);
+            GameObject obj2 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
-            GameObject obj3 = Instantiate(EnemyCube);
-            obj3.GetComponent<Enemyscript>().basey = -0.6f;
-            obj3.GetComponent<Enemyscript>().basex = 0.6f;
+            newposition = new Vector3(-0.6f, -0.6f, basez);
+            GameObject obj3 = Instantiate(EnemyCube, newposition, Quaternion.identity);
+
 
             list.Add(obj1);
             list.Add(obj2);
@@ -543,35 +569,39 @@ public class Playescript : MonoBehaviour
 
     private void MoveWall(int level, float speed)
     {
-        GameObject wall1 = GameObject.Find("wall1");
+        float scale = (float)(100 - level) / 100;
+        GameObject newwall = Instantiate(wallprefab, new Vector3(0, 0, basez), Quaternion.identity);
+        newwall.transform.localScale= new Vector3 (scale, scale, scale);
+        int Randint = UnityEngine.Random.Range(0, materials.Count);
 
-        GameObject wall2 = GameObject.Find("wall2");
-
-
-        if(!wall1next)
+        while(Randint == lastindex)
         {
-            wall2.transform.position = new Vector3(0, 0, wall1.transform.position.z+25);
-            for (int i = 0; i < wall2.transform.childCount; i++)
-            {
-                wall2.transform.GetChild(i).GetComponent<Renderer>().material = materials[level];
-            }
-            wall1next = true;
+            Randint = UnityEngine.Random.Range(0, materials.Count);
         }
-        else
-        {
-            wall1.transform.position = new Vector3(0, 0, wall2.transform.position.z + 25);
-            for (int i = 0; i < wall1.transform.childCount; i++)
-            {
-                wall1.transform.GetChild(i).GetComponent<Renderer>().material = materials[level];
-            }
-            wall1next= false;
-        }
-        wall1.GetComponent<wallscript>().speed = speed;
-        wall1.GetComponent<wallscript>().moving = true;
-        wall2.GetComponent<wallscript>().speed = speed;
-        wall2.GetComponent<wallscript>().moving = true;
-       
+        
+        lastindex = Randint;
 
+        for (int i = 0; i < newwall.transform.childCount; i++)
+        {
+            newwall.transform.GetChild(i).GetComponent<Renderer>().material = materials[Randint];
+        }
+        newwall.GetComponent<wallscript>().speed = speed;
+        newwall.GetComponent<wallscript>().moving = true;
+    }
+
+    private void generatematerials()
+    {
+        for(int i = 0; i < materials.Count; i++)
+        {
+            float randr = UnityEngine.Random.Range(0f, 1f);
+            float randg = UnityEngine.Random.Range(0f, 1f);
+            float randb = UnityEngine.Random.Range(0f, 1f);
+
+            Material newmat = new Material(materials[i]);
+            newmat.SetColor("_Color", new Color(randr, randg, randb,0f));
+
+            materials[i]=newmat;
+        }
     }
 
 }

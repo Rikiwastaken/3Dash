@@ -6,7 +6,7 @@ public class Enemyscript : MonoBehaviour
 {
 
     public float basespeed;
-    public float basez;
+    private float basez;
     public float multiplier=1f;
 
     public float basex;
@@ -16,7 +16,15 @@ public class Enemyscript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(basex,basey,basez);
+
+        basez = GameObject.Find("playercube").GetComponent<Playescript>().basez;
+
+
+        if(transform.position ==Vector3.zero)
+        {
+            transform.position = new Vector3(basex, basey, basez);
+        }
+
         multiplier = 1f;
     }
 
@@ -24,6 +32,15 @@ public class Enemyscript : MonoBehaviour
     void Update()
     {
         GetComponent<Rigidbody>().velocity = new Vector3(0,0,-basespeed)*multiplier;
+
+        if(transform.position.x==0 && transform.position.y==0)
+        {
+            Destroy(gameObject);
+        }
+        if (GameObject.Find("playercube").GetComponent<Playescript>().lives <= 0)
+        {
+            GetComponent<Rigidbody>().velocity= Vector3.zero;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,12 +49,18 @@ public class Enemyscript : MonoBehaviour
         {
             if (!other.transform.CompareTag("Player"))
             {
-                GameObject.Find("playercube").GetComponent<Playescript>().score++;
+                if (GameObject.Find("playercube").GetComponent<Playescript>().lives > 0)
+                {
+                    GameObject.Find("playercube").GetComponent<Playescript>().score++;
+                }
                 Destroy(this.gameObject);
             }
             else
             {
-                GameObject.Find("playercube").GetComponent<Playescript>().lives--;
+                if(GameObject.Find("playercube").GetComponent<Playescript>().lives>0)
+                {
+                    GameObject.Find("playercube").GetComponent<Playescript>().lives--;
+                }
                 Destroy(this.gameObject);
             }
         }

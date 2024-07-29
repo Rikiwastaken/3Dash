@@ -18,5 +18,25 @@ public class wallscript : MonoBehaviour
             GetComponent<Rigidbody>().velocity = new Vector3(0,0,-speed);
             
         }
+
+
+        if(this.transform.position.z<=-25)
+        {
+            Destroy(this);
+        }
+
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).GetComponent<Renderer>().material.color.a < 1f)
+            {
+                Color col = transform.GetChild(i).GetComponent<Renderer>().material.color;
+                Color newcol = new Color(col.r,col.g,col.b,col.a+0.1f);
+                transform.GetChild(i).GetComponent<Renderer>().material.color = newcol;
+            }
+        }
+        if(GameObject.Find("playercube").GetComponent<Playescript>().lives <= 0)
+        {
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
     }
 }

@@ -18,7 +18,7 @@ public class Playescript : MonoBehaviour
 
     public int speedmode;
 
-    private int level=1;
+    public int level;
     
 
     public float xlimit;
@@ -49,7 +49,7 @@ public class Playescript : MonoBehaviour
 
     public TextMeshProUGUI leveltxt;
 
-    private int generation;
+    public int generation;
 
     public List<Material> materials;
 
@@ -139,27 +139,7 @@ public class Playescript : MonoBehaviour
         if(lastlvl !=level && lives>0)
         {
             lastlvl = level;
-            if(level==1)
-            {
-                MoveWall(level,1f);
-            }
-            else if(level==2 || level ==3)
-            {
-                MoveWall(level,2f);
-            }
-            else if (level == 4 || level == 5)
-            {
-                MoveWall(level, 3f);
-            }
-            else if (level == 6)
-            {
-                MoveWall(level, 4f);
-            }
-            else if(level >= 7)
-            {
-                float mult = level / 2 + 1;
-                MoveWall(level, mult);
-            }
+            MoveWall(level, getmultiplicator());
 
         }
 
@@ -177,13 +157,13 @@ public class Playescript : MonoBehaviour
             generation++;
             SpawnEnemywave(level);
             spawncdcntr = (int)(timebetweenspawn/(Time.deltaTime));
-            if(level>2 && level<=15)
+            if(level>2 && level<=5)
             {
                 spawncdcntr = (int)(spawncdcntr / level) * 2;
             }
-            else if(level>15)
+            else if(level>7)
             {
-                spawncdcntr = (int)(spawncdcntr / 15) * 2;
+                spawncdcntr = (int)(spawncdcntr / 7) * 2;
             }
 
         }
@@ -201,6 +181,42 @@ public class Playescript : MonoBehaviour
         blinking =(int)(2/Time.deltaTime);
     }
 
+    private float getmultiplicator()
+    {
+        float mult = 0f;
+
+        if (level <= 3)
+        {
+            mult = 2f;
+        }
+        else if (level <= 5)
+        {
+            mult = 3f;
+        }
+        else if (level <= 6)
+        {
+            mult = 4f;
+        }
+        else if (level >= 7 && level < 15)
+        {
+            mult = level / 1.9f + 1.6f;
+        }
+        else if (level >= 15 && level < 25)
+        {
+            mult = level / 1.9f + 1.8f;
+        }
+        else if (level >= 25 && level < 35)
+        {
+            mult = level / 1.8f + 2.0f;
+        }
+        else
+        {
+            mult = level / 1.8f + 2.2f;
+        }
+
+            return mult;
+    }
+
     private void SpawnEnemywave(int level)
     {
         if (level <= 2)
@@ -210,228 +226,108 @@ public class Playescript : MonoBehaviour
 
             if (level==2)
             {
-                newcube.GetComponent<Enemyscript>().multiplier = 2f;
+                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
             
         }
 
-        if(level==3 || level==4)
+        else if(level==3 || level==4)
         {
             int rdint = UnityEngine.Random.Range(0, 2);
             if(rdint == 0)
             {
                 GameObject newcube = SpawnACube();
-                if(level==3)
-                {
-                    newcube.GetComponent<Enemyscript>().multiplier = 2f;
-                    
-                }
-                else
-                {
-                    newcube.GetComponent<Enemyscript>().multiplier = 3f;
-                    
-                }
+                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
             else
             {
                 List<GameObject> newcubelist = SpawnALineOf2();
-                if (level == 3)
-                {
-                    newcubelist[0].GetComponent<Enemyscript>().multiplier = 2f;
-                    newcubelist[1].GetComponent<Enemyscript>().multiplier = 2f;
-                }
-                else
-                {
-                    newcubelist[0].GetComponent<Enemyscript>().multiplier = 3f;
-                    newcubelist[0].GetComponent<Enemyscript>().multiplier = 3f;
-                    
-                }
+                newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
 
         }
 
-        if( level == 5 || level == 6)
+        else if( level == 5 || level == 6)
         {
             int rdint = UnityEngine.Random.Range(0, 3);
             if (rdint == 0)
             {
                 GameObject newcube = SpawnACube();
-                if (level == 5)
-                {
-                    newcube.GetComponent<Enemyscript>().multiplier = 3f;
-                }
-                else
-                {
-                    newcube.GetComponent<Enemyscript>().multiplier = 4f;
-                }
+                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                
             }
             else if (rdint == 1)
             {
                 List<GameObject> newcubelist = SpawnALineOf2();
-                if (level == 5)
-                {
-                    newcubelist[0].GetComponent<Enemyscript>().multiplier = 3f;
-                    newcubelist[1].GetComponent<Enemyscript>().multiplier = 3f;
-                }
-                else
-                {
-                    newcubelist[0].GetComponent<Enemyscript>().multiplier = 4f;
-                    newcubelist[1].GetComponent<Enemyscript>().multiplier = 4f;
-                }
+                newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
             else if (rdint == 2)
             {
                 List<GameObject> newcubelist = SpawnFullLine();
-                if (level == 5)
-                {
-                    newcubelist[0].GetComponent<Enemyscript>().multiplier = 3f;
-                    newcubelist[1].GetComponent<Enemyscript>().multiplier = 3f;
-                    newcubelist[2].GetComponent<Enemyscript>().multiplier = 3f;
-                }
-                else
-                {
-                    newcubelist[0].GetComponent<Enemyscript>().multiplier = 4f;
-                    newcubelist[1].GetComponent<Enemyscript>().multiplier = 4f;
-                    newcubelist[2].GetComponent<Enemyscript>().multiplier = 4f;
-                }
+                newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[2].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
         }
 
-        if( level >=7 && level<15)
+        else if( level >=7 && level<15)
         {
-            float mult = level/2 +0.6f;
 
             int rdint = UnityEngine.Random.Range(0, 3);
             if (rdint == 0)
             {
                 GameObject newcube = SpawnACube();
-                newcube.GetComponent<Enemyscript>().multiplier = mult;
+                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+
             }
             else if (rdint == 1)
             {
                 List<GameObject> newcubelist = SpawnALineOf2();
-                newcubelist[0].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[1].GetComponent<Enemyscript>().multiplier = mult;
+                newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
             else if (rdint == 2)
             {
                 List<GameObject> newcubelist = SpawnFullLine();
-                newcubelist[0].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[1].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[2].GetComponent<Enemyscript>().multiplier = mult;
+                newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[2].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
         }
 
-        if (level >= 15 && level < 25)
+        else if (level >= 15)
         {
-            float mult = level / 2 + 0.6f;
+           
 
-            int rdint = UnityEngine.Random.Range(0, 4);
+            int rdint = UnityEngine.Random.Range(0, 5);
             if (rdint == 0)
             {
                 GameObject newcube = SpawnACube();
-                newcube.GetComponent<Enemyscript>().multiplier = mult;
+                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                
             }
             else if (rdint == 1)
             {
                 List<GameObject> newcubelist = SpawnALineOf2();
-                newcubelist[0].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[1].GetComponent<Enemyscript>().multiplier = mult;
+                newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
             else if (rdint == 2)
             {
                 List<GameObject> newcubelist = SpawnFullLine();
-                newcubelist[0].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[1].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[2].GetComponent<Enemyscript>().multiplier = mult;
+                newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                newcubelist[2].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
-            else if (rdint == 3)
+            else
             {
                 List<GameObject> newcubelist = SpawnMultiple(4);
 
-
-
-
-
                 for (int i = 0; i < newcubelist.Count; i++)
                 {
-                    newcubelist[i].GetComponent<Enemyscript>().multiplier = mult;
-                }
-            }
-        }
-
-        if (level >= 25 && level < 35)
-        {
-            float mult = level / 2 + 0.8f;
-
-            int rdint = UnityEngine.Random.Range(0, 4);
-            if (rdint == 0)
-            {
-                GameObject newcube = SpawnACube();
-                newcube.GetComponent<Enemyscript>().multiplier = mult;
-            }
-            else if (rdint == 1)
-            {
-                List<GameObject> newcubelist = SpawnALineOf2();
-                newcubelist[0].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[1].GetComponent<Enemyscript>().multiplier = mult;
-            }
-            else if (rdint == 2)
-            {
-                List<GameObject> newcubelist = SpawnFullLine();
-                newcubelist[0].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[1].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[2].GetComponent<Enemyscript>().multiplier = mult;
-            }
-            else if (rdint == 3)
-            {
-                List<GameObject> newcubelist = SpawnMultiple(4);
-
-
-
-
-
-                for (int i = 0; i < newcubelist.Count; i++)
-                {
-                    newcubelist[i].GetComponent<Enemyscript>().multiplier = mult;
-                }
-            }
-        }
-
-        if (level >= 35)
-        {
-            float mult = level / 2 + 1f;
-
-            int rdint = UnityEngine.Random.Range(0, 4);
-            if (rdint == 0)
-            {
-                GameObject newcube = SpawnACube();
-                newcube.GetComponent<Enemyscript>().multiplier = mult;
-            }
-            else if (rdint == 1)
-            {
-                List<GameObject> newcubelist = SpawnALineOf2();
-                newcubelist[0].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[1].GetComponent<Enemyscript>().multiplier = mult;
-            }
-            else if (rdint == 2)
-            {
-                List<GameObject> newcubelist = SpawnFullLine();
-                newcubelist[0].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[1].GetComponent<Enemyscript>().multiplier = mult;
-                newcubelist[2].GetComponent<Enemyscript>().multiplier = mult;
-            }
-            else if (rdint == 3)
-            {
-                List<GameObject> newcubelist = SpawnMultiple(4);
-
-
-
-
-
-                for (int i = 0; i < newcubelist.Count; i++)
-                {
-                    newcubelist[i].GetComponent<Enemyscript>().multiplier = mult;
+                    newcubelist[i].GetComponent<Enemyscript>().multiplier = getmultiplicator();
                 }
             }
         }
@@ -505,13 +401,14 @@ public class Playescript : MonoBehaviour
             newposition.y = 0.6f;
         }
         GameObject newcube = Instantiate(EnemyCube, newposition,Quaternion.identity);
+        newcube.transform.position = newposition;
         return newcube;
     }
 
     private List<GameObject> SpawnMultiple(int number)
     {
-        List<GameObject> list = new List<GameObject>();
 
+        List<GameObject> list = new List<GameObject>();
         int rdint = UnityEngine.Random.Range(0, 4);
 
         Vector3 blacklistedpos = Vector3.zero;
@@ -540,23 +437,23 @@ public class Playescript : MonoBehaviour
 
             bool different = true;
 
-            for (int i = 0; i <list.Count; i++)
-            {
+            //for (int i = 0; i <list.Count; i++)
+            //{
                 
 
-                if (list[i].transform.position == newcube.transform.position || newcube.transform.position == blacklistedpos)
-                {
-                    different = false;
-                }
+            //    if (list[i].transform.position.x == newcube.transform.position.x && list[i].transform.position.y == newcube.transform.position.y)
+            //    {
+            //        different = false;
+            //    }
 
-            }
-
-            if (different)
+            //}
+            list.Add(newcube);
+            if (different && newcube.transform.position.x != blacklistedpos.x && newcube.transform.position.y != blacklistedpos.y)
             {
                 list.Add(newcube);
             }
 
-
+            
         }
 
         return list;

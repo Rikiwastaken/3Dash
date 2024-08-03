@@ -28,4 +28,18 @@ public class buttons : MonoBehaviour
             GameObject.Find("Music2").GetComponent<AudioSource>().mute = false;
         }
     }
+
+    public void Mute()
+    {
+        if (GameObject.Find("Music1").GetComponent<AudioSource>().volume == 1f)
+        {
+            GameObject.Find("Music1").GetComponent<AudioSource>().volume = 0f;
+            GameObject.Find("Music2").GetComponent<AudioSource>().volume = 0f;
+        }
+        else
+        {
+            GameObject.Find("Music1").GetComponent<AudioSource>().volume = 1f;
+            GameObject.Find("Music2").GetComponent<AudioSource>().volume = 1f;
+        }
+    }
 }

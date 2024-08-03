@@ -15,7 +15,7 @@ public class wallscript : MonoBehaviour
     {
         if (moving)
         {
-            GetComponent<Rigidbody>().velocity = new Vector3(0,0,-speed);
+            GetComponent<Rigidbody>().velocity = new Vector3(0,0,-5-speed);
             
         }
 

@@ -212,17 +212,22 @@ MonoBehaviour:
   movement: {fileID: -2193935996920047316, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
   start: {fileID: -6674612236553370922, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
   speedmode: 0
+  level: 0
   xlimit: 0.6
   ylimit: 0.6
   multiplicateur: 10
   timebetweenspawn: 1.5
   EnemyCube: {fileID: 2985383379182647746, guid: c783e5a7b09580148b0897bf14bd0bae, type: 3}
+  BombCube: {fileID: 2985383379182647746, guid: d8b54a4929dd0b44b8fc52fb21bb66f4, type: 3}
+  LifeCube: {fileID: 2985383379182647746, guid: 584a591d86d5e4d4e884ee832bdcca8d, type: 3}
+  ShieldCube: {fileID: 2985383379182647746, guid: 57ec05b5c1765cf44ae1f2865c65679a, type: 3}
   wallprefab: {fileID: 3707139051351795673, guid: 1a06e7aa8e443dd4595fb643b3555b05, type: 3}
   score: 0
   lives: 3
   scoretxt: {fileID: 0}
   livestxt: {fileID: 0}
   leveltxt: {fileID: 0}
+  generation: 0
   materials:
   - {fileID: 2100000, guid: 5f8d09d0a15891748aacbccbddf94438, type: 2}
   - {fileID: 2100000, guid: a3b0a0dd1840c954bb8aa7823f1a8ebe, type: 2}

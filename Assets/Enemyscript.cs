@@ -7,10 +7,12 @@ public class Enemyscript : MonoBehaviour
 
     public float basespeed;
     private float basez;
-    public float multiplier=1f;
+    public float multiplier;
 
     public float basex;
     public float basey;
+
+    public string power;
 
 
     // Start is called before the first frame update
@@ -24,8 +26,6 @@ public class Enemyscript : MonoBehaviour
         {
             transform.position = new Vector3(basex, basey, basez);
         }
-
-        multiplier = 1f;
     }
 
     // Update is called once per frame
@@ -33,7 +33,7 @@ public class Enemyscript : MonoBehaviour
     {
         GetComponent<Rigidbody>().velocity = new Vector3(0,0,-basespeed)*multiplier;
 
-        if(transform.position.x==0 && transform.position.y==0)
+        if (transform.position.x==0 && transform.position.y==0)
         {
             Destroy(gameObject);
         }
@@ -57,10 +57,27 @@ public class Enemyscript : MonoBehaviour
             }
             else
             {
-                if(GameObject.Find("playercube").GetComponent<Playescript>().lives>0 && GameObject.Find("playercube").GetComponent<Playescript>().blinking<=0)
+                if(power!="")
+                {
+                    if(power=="shield")
+                    {
+                        GameObject.Find("playercube").GetComponent<Playescript>().StartIFrame(6f);
+                    }
+                    else if(power=="bomb")
+                    {
+                        GameObject.Find("playercube").GetComponent<Playescript>().score+= GameObject.Find("Enemies").transform.childCount;
+                        Destroy(GameObject.Find("Enemies"));
+                        GameObject newenemis = new GameObject("Enemies");
+                    }
+                    else if (power == "life")
+                    {
+                        GameObject.Find("playercube").GetComponent<Playescript>().lives++;
+                    }
+                }
+                else if(GameObject.Find("playercube").GetComponent<Playescript>().lives>0 && GameObject.Find("playercube").GetComponent<Playescript>().blinking<=0)
                 {
                     GameObject.Find("playercube").GetComponent<Playescript>().lives--;
-                    GameObject.Find("playercube").GetComponent<Playescript>().StartIFrame();
+                    GameObject.Find("playercube").GetComponent<Playescript>().StartIFrame(2f);
                 }
                 Destroy(this.gameObject);
             }

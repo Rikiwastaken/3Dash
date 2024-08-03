@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -34,6 +35,12 @@ public class Playescript : MonoBehaviour
     public float timebetweenspawn;
 
     public GameObject EnemyCube;
+
+    public GameObject BombCube;
+
+    public GameObject LifeCube;
+
+    public GameObject ShieldCube;
 
     public GameObject wallprefab;
 
@@ -139,7 +146,15 @@ public class Playescript : MonoBehaviour
         if(lastlvl !=level && lives>0)
         {
             lastlvl = level;
-            MoveWall(level, getmultiplicator());
+            if(level<=35)
+            {
+                MoveWall(level, getmultiplicator());
+            }
+            else
+            {
+                MoveWall(level, 35 / 1.8f + 2.2f);
+            }
+            
 
         }
 
@@ -176,9 +191,9 @@ public class Playescript : MonoBehaviour
 
     }
 
-    public void StartIFrame()
+    public void StartIFrame(float time)
     {
-        blinking =(int)(2/Time.deltaTime);
+        blinking =(int)(time/Time.deltaTime);
     }
 
     private float getmultiplicator()
@@ -187,31 +202,31 @@ public class Playescript : MonoBehaviour
 
         if (level <= 3)
         {
-            mult = 2f;
+            mult = 1f;
         }
         else if (level <= 5)
         {
-            mult = 3f;
+            mult = 1.1f;
         }
         else if (level <= 6)
         {
-            mult = 4f;
+            mult = 1.2f;
         }
         else if (level >= 7 && level < 15)
         {
-            mult = level / 1.9f + 1.6f;
+            mult = 1.3f;
         }
         else if (level >= 15 && level < 25)
         {
-            mult = level / 1.9f + 1.8f;
+            mult = 1.4f;
         }
         else if (level >= 25 && level < 35)
         {
-            mult = level / 1.8f + 2.0f;
+            mult = 1.5f;
         }
         else
         {
-            mult = level / 1.8f + 2.2f;
+            mult = 1.6f;
         }
 
             return mult;
@@ -301,7 +316,7 @@ public class Playescript : MonoBehaviour
         {
            
 
-            int rdint = UnityEngine.Random.Range(0, 5);
+            int rdint = UnityEngine.Random.Range(0, 6);
             if (rdint == 0)
             {
                 GameObject newcube = SpawnACube();
@@ -324,6 +339,7 @@ public class Playescript : MonoBehaviour
             else
             {
                 List<GameObject> newcubelist = SpawnMultiple(4);
+                
 
                 for (int i = 0; i < newcubelist.Count; i++)
                 {
@@ -400,11 +416,36 @@ public class Playescript : MonoBehaviour
         {
             newposition.y = 0.6f;
         }
-        GameObject newcube = Instantiate(EnemyCube, newposition,Quaternion.identity);
+
+        rdint = UnityEngine.Random.Range(0, 100);
+        GameObject newcube=null;
+        if (rdint == 50)
+        {
+            rdint = UnityEngine.Random.Range(0, 3);
+            if(rdint ==0)
+            {
+                newcube = Instantiate(LifeCube, newposition, Quaternion.identity);
+            }
+            else if (rdint == 1)
+            {
+                newcube = Instantiate(BombCube, newposition, Quaternion.identity);
+            }
+            else
+            {
+                newcube = Instantiate(ShieldCube, newposition, Quaternion.identity);
+            }
+
+        }
+        else
+        {
+            newcube = Instantiate(EnemyCube, newposition, Quaternion.identity);
+
+        }
+
         newcube.transform.position = newposition;
+        newcube.transform.SetParent(GameObject.Find("Enemies").transform);
         return newcube;
     }
-
     private List<GameObject> SpawnMultiple(int number)
     {
 
@@ -437,20 +478,15 @@ public class Playescript : MonoBehaviour
 
             bool different = true;
 
-            //for (int i = 0; i <list.Count; i++)
-            //{
-                
+            blacklistedpos = new Vector3(blacklistedpos.x, blacklistedpos.y, newcube.transform.position.z);
 
-            //    if (list[i].transform.position.x == newcube.transform.position.x && list[i].transform.position.y == newcube.transform.position.y)
-            //    {
-            //        different = false;
-            //    }
-
-            //}
-            list.Add(newcube);
-            if (different && newcube.transform.position.x != blacklistedpos.x && newcube.transform.position.y != blacklistedpos.y)
+            if (different && Vector3.Distance(blacklistedpos, newcube.transform.position)>=0.05f)
             {
                 list.Add(newcube);
+            }
+            else
+            {
+                Destroy(newcube);
             }
 
             
@@ -496,6 +532,7 @@ public class Playescript : MonoBehaviour
         }
 
         GameObject newcube = Instantiate(EnemyCube, newposition, Quaternion.identity);
+        newcube.transform.SetParent(GameObject.Find("Enemies").transform);
 
         list.Add(newcube);
 
@@ -585,6 +622,7 @@ public class Playescript : MonoBehaviour
         }
 
         GameObject othercube = Instantiate(EnemyCube, otherposition, Quaternion.identity);
+        othercube.transform.SetParent(GameObject.Find("Enemies").transform);
 
 
         list.Add(othercube);
@@ -609,6 +647,10 @@ public class Playescript : MonoBehaviour
             newposition = new Vector3(0.6f, -0.6f, basez);
             GameObject obj3 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
+            obj1.transform.SetParent(GameObject.Find("Enemies").transform);
+            obj2.transform.SetParent(GameObject.Find("Enemies").transform);
+            obj3.transform.SetParent(GameObject.Find("Enemies").transform);
+
             list.Add(obj1);
             list.Add(obj2);
             list.Add(obj3);
@@ -626,6 +668,9 @@ public class Playescript : MonoBehaviour
             newposition = new Vector3(-0.6f, -0.6f, basez);
             GameObject obj3 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
+            obj1.transform.SetParent(GameObject.Find("Enemies").transform);
+            obj2.transform.SetParent(GameObject.Find("Enemies").transform);
+            obj3.transform.SetParent(GameObject.Find("Enemies").transform);
 
             list.Add(obj1);
             list.Add(obj2);
@@ -643,6 +688,9 @@ public class Playescript : MonoBehaviour
             newposition = new Vector3(-0.6f, 0.6f, basez);
             GameObject obj3 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
+            obj1.transform.SetParent(GameObject.Find("Enemies").transform);
+            obj2.transform.SetParent(GameObject.Find("Enemies").transform);
+            obj3.transform.SetParent(GameObject.Find("Enemies").transform);
 
             list.Add(obj1);
             list.Add(obj2);
@@ -660,13 +708,16 @@ public class Playescript : MonoBehaviour
             newposition = new Vector3(-0.6f, -0.6f, basez);
             GameObject obj3 = Instantiate(EnemyCube, newposition, Quaternion.identity);
 
+            obj1.transform.SetParent(GameObject.Find("Enemies").transform);
+            obj2.transform.SetParent(GameObject.Find("Enemies").transform);
+            obj3.transform.SetParent(GameObject.Find("Enemies").transform);
 
             list.Add(obj1);
             list.Add(obj2);
             list.Add(obj3);
 
         }
-
+        
         return list;
     }
 

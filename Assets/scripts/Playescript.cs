@@ -169,7 +169,14 @@ public class Playescript : MonoBehaviour
 
         if (spawncdcntr==0 && lives>0)
         {
-            generation++;
+            if(level<10)
+            {
+                generation+=2;
+            }
+            else
+            {
+                generation++;
+            }
             SpawnEnemywave(level);
             spawncdcntr = (int)(timebetweenspawn/(Time.deltaTime));
             if(level>2 && level<=5)
@@ -187,7 +194,7 @@ public class Playescript : MonoBehaviour
             spawncdcntr--;
         }
 
-        level = (int)(generation / 10) + 2;
+        level = (int)(generation / 9) + 2;
 
     }
 
@@ -226,7 +233,7 @@ public class Playescript : MonoBehaviour
         }
         else
         {
-            mult = 1.6f;
+            mult = level/70 + 1.1f;
         }
 
             return mult;
@@ -419,22 +426,17 @@ public class Playescript : MonoBehaviour
 
         rdint = UnityEngine.Random.Range(0, 100);
         GameObject newcube=null;
-        if (rdint == 50)
+        if (rdint==33 || rdint == 34)
         {
-            rdint = UnityEngine.Random.Range(0, 3);
-            if(rdint ==0)
-            {
-                newcube = Instantiate(LifeCube, newposition, Quaternion.identity);
-            }
-            else if (rdint == 1)
-            {
-                newcube = Instantiate(BombCube, newposition, Quaternion.identity);
-            }
-            else
-            {
-                newcube = Instantiate(ShieldCube, newposition, Quaternion.identity);
-            }
-
+            newcube = Instantiate(LifeCube, newposition, Quaternion.identity);
+        }
+        else if(rdint==50 || rdint==51)
+        {
+            newcube = Instantiate(BombCube, newposition, Quaternion.identity);
+        }
+        else if(rdint == 66 || rdint == 67)
+        {
+            newcube = Instantiate(ShieldCube, newposition, Quaternion.identity);
         }
         else
         {

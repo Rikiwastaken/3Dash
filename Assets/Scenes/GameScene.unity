@@ -2294,6 +2294,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: playercube
       objectReference: {fileID: 0}
+    - target: {fileID: 5775198149335644267, guid: da0b8d46029b9a447b3761469d43b9c8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5788415753445770109, guid: da0b8d46029b9a447b3761469d43b9c8, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5

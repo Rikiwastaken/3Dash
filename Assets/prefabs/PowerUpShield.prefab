@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -376890519510784553}
   - component: {fileID: -7716662921463452584}
   m_Layer: 0
-  m_Name: PowerUpLife
+  m_Name: PowerUpShield
   m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6d2f8694f961804429fd4f88b684511a, type: 2}
+  - {fileID: 2100000, guid: bcc373418bd009747b6f3e612152d516, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,7 +125,8 @@ MonoBehaviour:
   multiplier: 1
   basex: 0
   basey: 0
-  power: life
+  power: shield
+  text: {fileID: 5211414887875237535, guid: 34d6026f95a00fa4cb5f82bbb20045ec, type: 3}
 --- !u!54 &-7716662921463452584
 Rigidbody:
   m_ObjectHideFlags: 0

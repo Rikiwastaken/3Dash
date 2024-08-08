@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Enemyscript : MonoBehaviour
@@ -26,6 +27,20 @@ public class Enemyscript : MonoBehaviour
         {
             transform.position = new Vector3(basex, basey, basez);
         }
+
+        if(transform.childCount >0)
+        {
+            int rdint = UnityEngine.Random.Range(0, 100);
+            if (rdint == 10)
+            {
+                transform.GetChild(0).gameObject.SetActive(true);
+            }
+            else
+            {
+                transform.GetChild(0).gameObject.SetActive(false);
+            }
+        }
+
     }
 
     // Update is called once per frame
@@ -62,16 +77,19 @@ public class Enemyscript : MonoBehaviour
                     if(power=="shield")
                     {
                         GameObject.Find("playercube").GetComponent<Playescript>().StartIFrame(6f);
+                        InstantiateText("Shield");
                     }
                     else if(power=="bomb")
                     {
                         GameObject.Find("playercube").GetComponent<Playescript>().score+= GameObject.Find("Enemies").transform.childCount;
                         Destroy(GameObject.Find("Enemies"));
                         GameObject newenemis = new GameObject("Enemies");
+                        InstantiateText("Bomb");
                     }
                     else if (power == "life")
                     {
                         GameObject.Find("playercube").GetComponent<Playescript>().lives++;
+                        InstantiateText("+1 Life");
                     }
                 }
                 else if(GameObject.Find("playercube").GetComponent<Playescript>().lives>0 && GameObject.Find("playercube").GetComponent<Playescript>().blinking<=0)
@@ -84,4 +102,35 @@ public class Enemyscript : MonoBehaviour
         }
         
     }
+
+    void InstantiateText(string texttoshow)
+    {
+        GameObject newtext = GameObject.Find("TextObject");
+
+        newtext.transform.GetChild(0).gameObject.SetActive(true);
+
+        newtext.GetComponentInChildren<TextMeshProUGUI>().text = texttoshow;
+
+
+        if(texttoshow== "Shield")
+        {
+            newtext.transform.Find("Shield").gameObject.SetActive(true);
+        }
+        else if (texttoshow == "Bomb")
+        {
+            newtext.transform.Find("Buster").gameObject.SetActive(true);
+        }
+        else
+        {
+            newtext.transform.Find("Speed").gameObject.SetActive(true);
+        }
+
+        newtext.GetComponent<textscript>().frametofade = (int)(3/Time.deltaTime);
+
+    }
+
+
 }
+
+
+

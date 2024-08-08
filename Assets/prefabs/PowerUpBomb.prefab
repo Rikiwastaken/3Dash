@@ -126,6 +126,7 @@ MonoBehaviour:
   basex: 0
   basey: 0
   power: bomb
+  text: {fileID: 5211414887875237535, guid: 34d6026f95a00fa4cb5f82bbb20045ec, type: 3}
 --- !u!54 &-7716662921463452584
 Rigidbody:
   m_ObjectHideFlags: 0

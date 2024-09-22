@@ -154,7 +154,7 @@ public class Playescript : MonoBehaviour
             }
             else
             {
-                MoveWall(level, 35 / 1.8f + 2.2f);
+                MoveWall(level, 35 / 70 + 1.1f);
             }
             
 

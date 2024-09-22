@@ -17,14 +17,27 @@ public class wallscript : MonoBehaviour
     {
         if (moving)
         {
-            GetComponent<Rigidbody>().velocity = new Vector3(0,0,-5-speed);
-            
+            //GetComponent<Rigidbody>().velocity = new Vector3(0,0,-5-speed);
+            GetComponent<Rigidbody>().velocity = new Vector3(0, 0, -10 * speed);
+
         }
 
 
-        if(this.transform.position.z<=-50)
+        if(this.transform.position.z<=-75)
         {
-            Destroy(this.gameObject);
+            GameObject[] walls = GameObject.FindGameObjectsWithTag("wall");
+            int nbwalls=0;
+            foreach (GameObject wall in walls)
+            {
+                if(wall.GetComponent<wallscript>() != null)
+                {
+                    nbwalls++;
+                }
+            }
+            if(nbwalls > 3)
+            {
+                Destroy(this.gameObject);
+            }
         }
 
         for(int i = 0; i < transform.childCount; i++)

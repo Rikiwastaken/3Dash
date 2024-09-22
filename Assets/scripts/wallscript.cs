@@ -22,9 +22,9 @@ public class wallscript : MonoBehaviour
         }
 
 
-        if(this.transform.position.z<=-25)
+        if(this.transform.position.z<=-50)
         {
-            Destroy(this);
+            Destroy(this.gameObject);
         }
 
         for(int i = 0; i < transform.childCount; i++)
@@ -50,40 +50,13 @@ public class wallscript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.transform.name== "WallBehind")
+        if(other.transform.GetComponent<wallscript>() != null)
         {
-            GameObject[] walls = GameObject.FindGameObjectsWithTag("wall");
-            foreach(GameObject wall in walls)
-            {
-                if(wall.GetComponent<wallscript>() != null)
-                {
-                    if (wall.GetComponent<wallscript>().ID < GetComponent<wallscript>().ID)
-                    {
-                        Destroy(wall);
-                    }
-                }
-            }
-        }
-        else if(other.transform.GetComponent<wallscript>() != null)
-        {
-            if(Mathf.Abs(other.transform.position.x-transform.position.x)<=1f)
+            if(Mathf.Abs(other.transform.position.z-transform.position.z)<=1f)
             {
                 if (other.GetComponent<wallscript>().ID < GetComponent<wallscript>().ID)
                 {
-                    Destroy(other);
-                }
-            }
-        }
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.transform.GetComponent<wallscript>() != null)
-        {
-            if (Mathf.Abs(other.transform.localScale.x - transform.localScale.x) <= 0.1f)
-            {
-                if (other.GetComponent<wallscript>().ID < GetComponent<wallscript>().ID)
-                {
-                    other.transform.localScale = other.transform.localScale / 1.00005f;
+                    Destroy(other.gameObject);
                 }
             }
         }

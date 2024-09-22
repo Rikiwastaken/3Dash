@@ -60,7 +60,7 @@ public class Enemyscript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!other.transform.GetComponent<Enemyscript>())
+        if(!other.transform.GetComponent<Enemyscript>() && other.transform.tag!="wall")
         {
             if (!other.transform.CompareTag("Player"))
             {

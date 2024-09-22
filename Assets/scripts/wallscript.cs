@@ -10,6 +10,8 @@ public class wallscript : MonoBehaviour
 
     public float speed;
 
+    public float ID;
+
     // Update is called once per frame
     void Update()
     {
@@ -37,6 +39,53 @@ public class wallscript : MonoBehaviour
         if(GameObject.Find("playercube").GetComponent<Playescript>().lives <= 0)
         {
             GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
+
+        if(transform.localScale.x<=1)
+        {
+            transform.localScale = transform.localScale*1.00005f;
+        }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.transform.name== "WallBehind")
+        {
+            GameObject[] walls = GameObject.FindGameObjectsWithTag("wall");
+            foreach(GameObject wall in walls)
+            {
+                if(wall.GetComponent<wallscript>() != null)
+                {
+                    if (wall.GetComponent<wallscript>().ID < GetComponent<wallscript>().ID)
+                    {
+                        Destroy(wall);
+                    }
+                }
+            }
+        }
+        else if(other.transform.GetComponent<wallscript>() != null)
+        {
+            if(Mathf.Abs(other.transform.position.x-transform.position.x)<=1f)
+            {
+                if (other.GetComponent<wallscript>().ID < GetComponent<wallscript>().ID)
+                {
+                    Destroy(other);
+                }
+            }
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.transform.GetComponent<wallscript>() != null)
+        {
+            if (Mathf.Abs(other.transform.localScale.x - transform.localScale.x) <= 0.1f)
+            {
+                if (other.GetComponent<wallscript>().ID < GetComponent<wallscript>().ID)
+                {
+                    other.transform.localScale = other.transform.localScale / 1.00005f;
+                }
+            }
         }
     }
 }

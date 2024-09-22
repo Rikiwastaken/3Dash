@@ -77,6 +77,8 @@ public class Playescript : MonoBehaviour
     public int blinkingcnt;
     private bool inv;
 
+    private int lastwall;
+
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -424,17 +426,17 @@ public class Playescript : MonoBehaviour
             newposition.y = 0.6f;
         }
 
-        rdint = UnityEngine.Random.Range(0, 100);
+        rdint = UnityEngine.Random.Range(0, 150);
         GameObject newcube=null;
-        if (rdint==33 || rdint == 34)
+        if (rdint==33)
         {
             newcube = Instantiate(LifeCube, newposition, Quaternion.identity);
         }
-        else if(rdint==50 || rdint==51)
+        else if(rdint==50)
         {
             newcube = Instantiate(BombCube, newposition, Quaternion.identity);
         }
-        else if(rdint == 66 || rdint == 67)
+        else if(rdint == 66)
         {
             newcube = Instantiate(ShieldCube, newposition, Quaternion.identity);
         }
@@ -725,7 +727,8 @@ public class Playescript : MonoBehaviour
 
     private void MoveWall(int level, float speed)
     {
-        float scale = (float)(300 - level) / 300;
+        lastwall++;
+        float scale = 0.9f;
         GameObject newwall = Instantiate(wallprefab, new Vector3(0, 0, basez), Quaternion.identity);
         newwall.transform.localScale= new Vector3 (scale, scale, scale);
         int Randint = UnityEngine.Random.Range(0, materials.Count);
@@ -743,8 +746,9 @@ public class Playescript : MonoBehaviour
         }
         newwall.GetComponent<wallscript>().speed = speed;
         newwall.GetComponent<wallscript>().moving = true;
+        newwall.GetComponent<wallscript>().ID = lastwall;
 
-        if(walllist.Count >= 5)
+        if (walllist.Count >= 5)
         {
             Destroy(walllist[0]);
             

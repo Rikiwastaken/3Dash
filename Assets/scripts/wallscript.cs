@@ -13,7 +13,7 @@ public class wallscript : MonoBehaviour
     public float ID;
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (moving)
         {

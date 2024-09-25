@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "UseBombs",
+                    "type": "Button",
+                    "id": "0a97e3b8-ff46-4d2e-ae00-800e168bc42b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -211,6 +220,17 @@
                     "action": "movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "cebe9fe9-10f1-40d7-8393-b13a4ff7585a",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseBombs",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

@@ -42,4 +42,17 @@ public class buttons : MonoBehaviour
             GameObject.Find("Music2").GetComponent<AudioSource>().volume = 1f;
         }
     }
+
+    public void Pause()
+    {
+        if(Time.timeScale > 0f)
+        {
+
+        Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+    }
 }

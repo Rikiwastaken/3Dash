@@ -12,7 +12,7 @@ public class Musicscript : MonoBehaviour
 
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(Application.targetFrameRate!=60)
         {

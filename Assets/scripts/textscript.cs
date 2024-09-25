@@ -9,7 +9,7 @@ public class textscript : MonoBehaviour
     public int frametofade;
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(frametofade > 0)
         {

@@ -212,6 +212,7 @@ MonoBehaviour:
   PlayerInput: {fileID: 194981484504776792}
   movement: {fileID: -2193935996920047316, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
   start: {fileID: -6674612236553370922, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
+  usebomb: {fileID: -3640193424867297896, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
   speedmode: 0
   level: 0
   xlimit: 0.6
@@ -223,6 +224,7 @@ MonoBehaviour:
   LifeCube: {fileID: 2985383379182647746, guid: 584a591d86d5e4d4e884ee832bdcca8d, type: 3}
   ShieldCube: {fileID: 2985383379182647746, guid: 57ec05b5c1765cf44ae1f2865c65679a, type: 3}
   wallprefab: {fileID: 3707139051351795673, guid: 1a06e7aa8e443dd4595fb643b3555b05, type: 3}
+  bombheld: 0
   score: 0
   lives: 3
   scoretxt: {fileID: 0}
@@ -316,6 +318,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 764ad1db-99c0-43a3-b811-96fcd9ec126b
     m_ActionName: 'BaseActionMap/movement[/XInputControllerWindows/dpad/up,/XInputControllerWindows/dpad/down,/XInputControllerWindows/dpad/left,/XInputControllerWindows/dpad/right,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0a97e3b8-ff46-4d2e-ae00-800e168bc42b
+    m_ActionName: 'BaseActionMap/UseBombs[/Keyboard/space]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: BaseActionMap

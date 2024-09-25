@@ -16,6 +16,7 @@ public class Playescript : MonoBehaviour
 
     public InputActionReference movement;
     public InputActionReference start;
+    public InputActionReference usebomb;
 
     public int speedmode;
 
@@ -34,6 +35,8 @@ public class Playescript : MonoBehaviour
     private int spawncdcntr;
     public float timebetweenspawn;
 
+    private bool bombpressed;
+
     public GameObject EnemyCube;
 
     public GameObject BombCube;
@@ -43,6 +46,10 @@ public class Playescript : MonoBehaviour
     public GameObject ShieldCube;
 
     public GameObject wallprefab;
+
+    public int bombheld;
+
+    private bool bombused;
 
     public int score;
 
@@ -55,6 +62,8 @@ public class Playescript : MonoBehaviour
     public TextMeshProUGUI livestxt;
 
     public TextMeshProUGUI leveltxt;
+
+    public TextMeshProUGUI bombtxt;
 
     public int generation;
 
@@ -89,6 +98,7 @@ public class Playescript : MonoBehaviour
     {
         movement.action.performed += OnMovementChange;
         start.action.performed += OnStartPress;
+        usebomb.action.performed += OnBombPress;
         nextpos = transform.position;
         generatematerials();
         walllist = new List<GameObject>();
@@ -105,9 +115,27 @@ public class Playescript : MonoBehaviour
         Application.Quit();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnBombPress(InputAction.CallbackContext context)
     {
+        float pressed = context.ReadValue<float>();
+        if (pressed != 0)
+        {
+            bombpressed = true;
+        }
+        else
+        {
+            bombpressed= false;
+        }
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if(!usebomb.action.IsPressed())
+        {
+            bombpressed = false;
+            bombused = false;
+        }
 
         if(blinking>0)
         {
@@ -167,7 +195,11 @@ public class Playescript : MonoBehaviour
 
         leveltxt.text = "Level : " + (level-1);
 
+        bombtxt.text = "Bombs : " + bombheld;
+
         ManageMovement();
+
+        Detonatebomb();
 
         if (spawncdcntr==0 && lives>0)
         {
@@ -430,7 +462,15 @@ public class Playescript : MonoBehaviour
         GameObject newcube=null;
         if (rdint==33)
         {
-            newcube = Instantiate(LifeCube, newposition, Quaternion.identity);
+            if(lives>3)
+            {
+                newcube = Instantiate(ShieldCube, newposition, Quaternion.identity);
+            }
+            else
+            {
+                newcube = Instantiate(LifeCube, newposition, Quaternion.identity);
+            }
+            
         }
         else if(rdint==50)
         {
@@ -771,6 +811,19 @@ public class Playescript : MonoBehaviour
 
             materials[i]=newmat;
         }
+    }
+
+    void Detonatebomb()
+    {
+        if(bombheld>0 && bombpressed && !bombused)
+        {
+            bombused= true;
+            GameObject.Find("playercube").GetComponent<Playescript>().score += GameObject.Find("Enemies").transform.childCount;
+            Destroy(GameObject.Find("Enemies"));
+            GameObject newenemis = new GameObject("Enemies");
+            bombheld--;
+        }
+        
     }
 
 }

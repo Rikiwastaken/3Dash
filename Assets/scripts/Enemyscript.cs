@@ -44,7 +44,7 @@ public class Enemyscript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         GetComponent<Rigidbody>().velocity = new Vector3(0,0,-basespeed)*multiplier;
 
@@ -81,10 +81,8 @@ public class Enemyscript : MonoBehaviour
                     }
                     else if(power=="bomb")
                     {
-                        GameObject.Find("playercube").GetComponent<Playescript>().score+= GameObject.Find("Enemies").transform.childCount;
-                        Destroy(GameObject.Find("Enemies"));
-                        GameObject newenemis = new GameObject("Enemies");
                         InstantiateText("Bomb");
+                        GameObject.Find("playercube").GetComponent<Playescript>().bombheld += 1;
                     }
                     else if (power == "life")
                     {

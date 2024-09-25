@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 8097270874688360297}
   - component: {fileID: 1473281496929451150}
   - component: {fileID: 194981484504776792}
+  - component: {fileID: 8138573387322696834}
   m_Layer: 0
   m_Name: playercube
   m_TagString: Player
@@ -332,11 +333,32 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2a5592dd-41fb-4600-b032-fe3b14d6ba4b
     m_ActionName: 'BaseActionMap/pause[/Keyboard/tab]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9a5dc2e2-06b2-43d1-bbe8-14e23e6c4051
+    m_ActionName: 'BaseActionMap/bullettime[/Keyboard/shift]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: BaseActionMap
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &8138573387322696834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5775198149335644267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b33adaebcd26b8848a8aaeb23732380e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slomoduration: 10000
+  slomocounter: 0
+  slowmo: {fileID: -9074689969534696615, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
+  slowmopressed: 0
+  mintimescale: 0.5
 --- !u!1001 &1801125371185523313
 PrefabInstance:
   m_ObjectHideFlags: 0

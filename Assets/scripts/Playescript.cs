@@ -17,6 +17,7 @@ public class Playescript : MonoBehaviour
     public InputActionReference movement;
     public InputActionReference start;
     public InputActionReference usebomb;
+    public InputActionReference pause;
 
     public int speedmode;
 
@@ -59,9 +60,15 @@ public class Playescript : MonoBehaviour
 
     public TextMeshProUGUI scoretxt;
 
-    public TextMeshProUGUI livestxt;
-
     public TextMeshProUGUI leveltxt;
+
+    public GameObject heart1;
+
+    public GameObject heart2;
+
+    public GameObject heart3;
+
+    public GameObject heart4;
 
     public TextMeshProUGUI bombtxt;
 
@@ -99,6 +106,7 @@ public class Playescript : MonoBehaviour
         movement.action.performed += OnMovementChange;
         start.action.performed += OnStartPress;
         usebomb.action.performed += OnBombPress;
+        pause.action.performed += OnPausePress;
         nextpos = transform.position;
         generatematerials();
         walllist = new List<GameObject>();
@@ -125,6 +133,19 @@ public class Playescript : MonoBehaviour
         else
         {
             bombpressed= false;
+        }
+    }
+
+    public void OnPausePress(InputAction.CallbackContext context)
+    {
+        if (Time.timeScale > 0f)
+        {
+
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
         }
     }
 
@@ -191,11 +212,45 @@ public class Playescript : MonoBehaviour
 
         scoretxt.text = "Score : " + score;
 
-        livestxt.text = lives + " lives";
+        if (lives >= 4)
+        {
+            heart4.SetActive(true);
+            heart3.SetActive(true);
+            heart2.SetActive(true);
+            heart1.SetActive(true);
+        }
+        else if (lives>=3)
+        {
+            heart4.SetActive(false);
+            heart3.SetActive(true);
+            heart2.SetActive(true);
+            heart1.SetActive(true);
+        }
+        else if(lives>=2)
+        {
+            heart4.SetActive(false);
+            heart3.SetActive(false);
+            heart2.SetActive(true);
+            heart1.SetActive(true);
+        }
+        else if (lives >= 1)
+        {
+            heart4.SetActive(false);
+            heart3.SetActive(false);
+            heart2.SetActive(false);
+            heart1.SetActive(true);
+        }
+        else
+        {
+            heart4.SetActive(false);
+            heart3.SetActive(false);
+            heart2.SetActive(false);
+            heart1.SetActive(false);
+        }
 
         leveltxt.text = "Level : " + (level-1);
 
-        bombtxt.text = "Bombs : " + bombheld;
+        bombtxt.text = "x" + bombheld;
 
         ManageMovement();
 

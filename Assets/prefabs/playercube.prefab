@@ -213,6 +213,7 @@ MonoBehaviour:
   movement: {fileID: -2193935996920047316, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
   start: {fileID: -6674612236553370922, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
   usebomb: {fileID: -3640193424867297896, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
+  pause: {fileID: 198737230754107159, guid: 911d6ec3019987540838b1c8a0143003, type: 3}
   speedmode: 0
   level: 0
   xlimit: 0.6
@@ -228,8 +229,12 @@ MonoBehaviour:
   score: 0
   lives: 3
   scoretxt: {fileID: 0}
-  livestxt: {fileID: 0}
   leveltxt: {fileID: 0}
+  heart1: {fileID: 0}
+  heart2: {fileID: 0}
+  heart3: {fileID: 0}
+  heart4: {fileID: 0}
+  bombtxt: {fileID: 0}
   generation: 0
   materials:
   - {fileID: 2100000, guid: 5f8d09d0a15891748aacbccbddf94438, type: 2}
@@ -322,6 +327,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0a97e3b8-ff46-4d2e-ae00-800e168bc42b
     m_ActionName: 'BaseActionMap/UseBombs[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2a5592dd-41fb-4600-b032-fe3b14d6ba4b
+    m_ActionName: 'BaseActionMap/pause[/Keyboard/tab]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: BaseActionMap

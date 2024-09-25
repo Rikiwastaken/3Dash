@@ -15,6 +15,10 @@ public class Enemyscript : MonoBehaviour
 
     public string power;
 
+    public int movedirection; //0 if not moving, 1 if moving horizontally, 2 if moving vertically
+
+    public float verhormovespeed;
+
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +50,63 @@ public class Enemyscript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        GetComponent<Rigidbody>().velocity = new Vector3(0,0,-basespeed)*multiplier;
+
+        Vector3 velocity = GetComponent<Rigidbody>().velocity;
+        if(movedirection==0)
+        {
+            velocity = new Vector3(0, 0, -basespeed) * multiplier;
+        }
+        else if(movedirection==1)
+        {
+
+            if((transform.position.x>=0.599f && transform.position.x <= 0.601f)|| (transform.position.x <= -0.599f && transform.position.x >= -0.611f))
+            {
+                if(velocity.x <= 0)
+                {
+                    velocity = new Vector3(verhormovespeed, 0, -basespeed * multiplier);
+                }
+                else
+                {
+                    velocity = new Vector3(-verhormovespeed, 0, -basespeed * multiplier);
+                }
+            }
+            if(transform.position.x>0.6f)
+            {
+                velocity = new Vector3(-verhormovespeed, 0, -basespeed * multiplier);
+                transform.position = new Vector3(0.59f,transform.position.y, transform.position.z);
+            }
+            if (transform.position.x < -0.6f)
+            {
+                velocity = new Vector3(verhormovespeed, 0, -basespeed * multiplier);
+                transform.position = new Vector3(-0.59f, transform.position.y, transform.position.z);
+            }
+        }
+        else if (movedirection == 2)
+        {
+            if ((transform.position.y >= 0.599f && transform.position.y <= 0.611f) || (transform.position.y <= -0.599f && transform.position.y >= -0.611f))
+            {
+                if (velocity.y <= 0)
+                {
+                    velocity = new Vector3(0,verhormovespeed, -basespeed * multiplier);
+                }
+                else
+                {
+                    velocity = new Vector3(0, -verhormovespeed, -basespeed * multiplier);
+                }
+            }
+            if (transform.position.y > 0.6f)
+            {
+                velocity = new Vector3(0, -verhormovespeed, -basespeed * multiplier);
+                transform.position = new Vector3( transform.position.x, 0.59f, transform.position.z);
+            }
+            if (transform.position.y < -0.6f)
+            {
+                velocity = new Vector3(0, verhormovespeed, -basespeed * multiplier);
+                transform.position = new Vector3( transform.position.x, -0.59f, transform.position.z);
+            }
+        }
+
+        GetComponent<Rigidbody>().velocity = velocity;
 
         if (transform.position.x==0 && transform.position.y==0)
         {

@@ -40,6 +40,8 @@ public class Playescript : MonoBehaviour
 
     public GameObject EnemyCube;
 
+    public GameObject MoveCube;
+
     public GameObject BombCube;
 
     public GameObject LifeCube;
@@ -332,29 +334,52 @@ public class Playescript : MonoBehaviour
     {
         if (level <= 2)
         {
-            GameObject newcube = SpawnACube();
 
 
             if (level==2)
             {
-                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                int rdint = UnityEngine.Random.Range(0, 2);
+                if (rdint == 0)
+                {
+                    GameObject newcube = SpawnACube();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
+                else
+                {
+                    GameObject newcube = SpawnMoving();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
             }
             
         }
 
         else if(level==3 || level==4)
         {
-            int rdint = UnityEngine.Random.Range(0, 2);
+            int rdint = UnityEngine.Random.Range(0, 3);
             if(rdint == 0)
             {
-                GameObject newcube = SpawnACube();
-                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                rdint = UnityEngine.Random.Range(0, 2);
+                if (rdint == 0)
+                {
+                    GameObject newcube = SpawnACube();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
+                else
+                {
+                    GameObject newcube = SpawnMoving();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
             }
-            else
+            else if(rdint == 1)
             {
                 List<GameObject> newcubelist = SpawnALineOf2();
                 newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
                 newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
+            }
+            else
+            {
+                GameObject newcube = SpawnMoving();
+                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
 
         }
@@ -364,8 +389,17 @@ public class Playescript : MonoBehaviour
             int rdint = UnityEngine.Random.Range(0, 3);
             if (rdint == 0)
             {
-                GameObject newcube = SpawnACube();
-                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                rdint = UnityEngine.Random.Range(0, 2);
+                if (rdint == 0)
+                {
+                    GameObject newcube = SpawnACube();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
+                else
+                {
+                    GameObject newcube = SpawnMoving();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
                 
             }
             else if (rdint == 1)
@@ -389,8 +423,17 @@ public class Playescript : MonoBehaviour
             int rdint = UnityEngine.Random.Range(0, 3);
             if (rdint == 0)
             {
-                GameObject newcube = SpawnACube();
-                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                rdint = UnityEngine.Random.Range(0, 2);
+                if (rdint == 0)
+                {
+                    GameObject newcube = SpawnACube();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
+                else
+                {
+                    GameObject newcube = SpawnMoving();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
 
             }
             else if (rdint == 1)
@@ -415,9 +458,18 @@ public class Playescript : MonoBehaviour
             int rdint = UnityEngine.Random.Range(0, 6);
             if (rdint == 0)
             {
-                GameObject newcube = SpawnACube();
-                newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
-                
+                rdint = UnityEngine.Random.Range(0, 2);
+                if (rdint == 0)
+                {
+                    GameObject newcube = SpawnACube();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
+                else
+                {
+                    GameObject newcube = SpawnMoving();
+                    newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
+                }
+
             }
             else if (rdint == 1)
             {
@@ -543,6 +595,51 @@ public class Playescript : MonoBehaviour
 
         newcube.transform.position = newposition;
         newcube.transform.SetParent(GameObject.Find("Enemies").transform);
+        return newcube;
+    }
+
+    private GameObject SpawnMoving()
+    {
+
+        int rdint = UnityEngine.Random.Range(-1, 1);
+        Vector3 newposition = new Vector3(0, 0, basez);
+        if (rdint == -1)
+        {
+            newposition.x = -0.6f;
+        }
+        else if (rdint == 0)
+        {
+            newposition.x = 0.6f;
+        }
+        else
+        {
+            newposition.x = 0.6f;
+        }
+        rdint = UnityEngine.Random.Range(-1, 1);
+        if (rdint == -1)
+        {
+            newposition.y = -0.6f;
+        }
+        else if (rdint == 0)
+        {
+            newposition.y = 0.6f;
+        }
+        else
+        {
+            newposition.y = 0.6f;
+        }
+
+        rdint = UnityEngine.Random.Range(1, 3);
+        GameObject newcube = Instantiate(MoveCube, newposition, Quaternion.identity);
+        Debug.Log(rdint);
+        if (rdint >= 2)
+        {
+            rdint = 2;
+        }
+        
+        newcube.transform.position = newposition;
+        newcube.transform.SetParent(GameObject.Find("Enemies").transform);
+        newcube.GetComponent<Enemyscript>().movedirection=rdint;
         return newcube;
     }
     private List<GameObject> SpawnMultiple(int number)

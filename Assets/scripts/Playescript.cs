@@ -338,8 +338,8 @@ public class Playescript : MonoBehaviour
 
             if (level==2)
             {
-                int rdint = UnityEngine.Random.Range(0, 2);
-                if (rdint == 0)
+                int rdint = UnityEngine.Random.Range(0, 20);
+                if (rdint <= 9)
                 {
                     GameObject newcube = SpawnACube();
                     newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
@@ -355,11 +355,11 @@ public class Playescript : MonoBehaviour
 
         else if(level==3 || level==4)
         {
-            int rdint = UnityEngine.Random.Range(0, 3);
-            if(rdint == 0)
+            int rdint = UnityEngine.Random.Range(0, 30);
+            if(rdint <= 9)
             {
-                rdint = UnityEngine.Random.Range(0, 2);
-                if (rdint == 0)
+                rdint = UnityEngine.Random.Range(0, 20);
+                if (rdint <= 9)
                 {
                     GameObject newcube = SpawnACube();
                     newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
@@ -370,7 +370,7 @@ public class Playescript : MonoBehaviour
                     newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
                 }
             }
-            else if(rdint == 1)
+            else if(rdint >= 10 && rdint <=19)
             {
                 List<GameObject> newcubelist = SpawnALineOf2();
                 newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
@@ -386,11 +386,11 @@ public class Playescript : MonoBehaviour
 
         else if( level == 5 || level == 6)
         {
-            int rdint = UnityEngine.Random.Range(0, 3);
-            if (rdint == 0)
+            int rdint = UnityEngine.Random.Range(0, 30);
+            if (rdint <= 9)
             {
-                rdint = UnityEngine.Random.Range(0, 2);
-                if (rdint == 0)
+                rdint = UnityEngine.Random.Range(0, 20);
+                if (rdint <= 10)
                 {
                     GameObject newcube = SpawnACube();
                     newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
@@ -402,13 +402,13 @@ public class Playescript : MonoBehaviour
                 }
                 
             }
-            else if (rdint == 1)
+            else if (rdint >= 10 && rdint <=19)
             {
                 List<GameObject> newcubelist = SpawnALineOf2();
                 newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
                 newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
-            else if (rdint == 2)
+            else if (rdint >= 20)
             {
                 List<GameObject> newcubelist = SpawnFullLine();
                 newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
@@ -420,11 +420,11 @@ public class Playescript : MonoBehaviour
         else if( level >=7 && level<15)
         {
 
-            int rdint = UnityEngine.Random.Range(0, 3);
-            if (rdint == 0)
+            int rdint = UnityEngine.Random.Range(0, 30);
+            if (rdint <= 9)
             {
-                rdint = UnityEngine.Random.Range(0, 2);
-                if (rdint == 0)
+                rdint = UnityEngine.Random.Range(0, 20);
+                if (rdint <= 9)
                 {
                     GameObject newcube = SpawnACube();
                     newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
@@ -436,13 +436,13 @@ public class Playescript : MonoBehaviour
                 }
 
             }
-            else if (rdint == 1)
+            else if (rdint >= 10 && rdint<=19)
             {
                 List<GameObject> newcubelist = SpawnALineOf2();
                 newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
                 newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
-            else if (rdint == 2)
+            else if (rdint >= 20)
             {
                 List<GameObject> newcubelist = SpawnFullLine();
                 newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
@@ -455,11 +455,11 @@ public class Playescript : MonoBehaviour
         {
            
 
-            int rdint = UnityEngine.Random.Range(0, 6);
-            if (rdint == 0)
+            int rdint = UnityEngine.Random.Range(0, 60);
+            if (rdint <= 9)
             {
-                rdint = UnityEngine.Random.Range(0, 2);
-                if (rdint == 0)
+                rdint = UnityEngine.Random.Range(0, 20);
+                if (rdint <= 10)
                 {
                     GameObject newcube = SpawnACube();
                     newcube.GetComponent<Enemyscript>().multiplier = getmultiplicator();
@@ -471,13 +471,13 @@ public class Playescript : MonoBehaviour
                 }
 
             }
-            else if (rdint == 1)
+            else if (rdint >= 10 && rdint <=19)
             {
                 List<GameObject> newcubelist = SpawnALineOf2();
                 newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
                 newcubelist[1].GetComponent<Enemyscript>().multiplier = getmultiplicator();
             }
-            else if (rdint == 2)
+            else if (rdint >= 20 && rdint <=29)
             {
                 List<GameObject> newcubelist = SpawnFullLine();
                 newcubelist[0].GetComponent<Enemyscript>().multiplier = getmultiplicator();
@@ -510,18 +510,22 @@ public class Playescript : MonoBehaviour
             if (nextpos.y == -ylimit && movementinput.y > 0)
             {
                 nextpos = new Vector3(nextpos.x, ylimit, transform.position.z);
+                ManageOrientation(0);
             }
             else if (nextpos.y == ylimit && movementinput.y < 0)
             {
                 nextpos = new Vector3(nextpos.x, -ylimit, transform.position.z);
+                ManageOrientation(1);
             }
             if (nextpos.x == -xlimit && movementinput.x > 0)
             {
                 nextpos = new Vector3(xlimit, nextpos.y, transform.position.z);
+                ManageOrientation(2);
             }
             else if (nextpos.x == xlimit && movementinput.x < 0)
             {
                 nextpos = new Vector3(-xlimit, nextpos.y, transform.position.z);
+                ManageOrientation(3);
             }
         }
         else
@@ -533,13 +537,13 @@ public class Playescript : MonoBehaviour
     private GameObject SpawnACube()
     {
         
-        int rdint = UnityEngine.Random.Range(-1, 2);
+        int rdint = UnityEngine.Random.Range(0, 30);
         Vector3 newposition = new Vector3(0, 0, basez);
-        if (rdint == -1)
+        if (rdint <= 9)
         {
             newposition.x = -0.6f;
         }
-        else if (rdint == 1)
+        else if (rdint >= 10 && rdint <= 19)
         {
             newposition.x = 0.6f;
         }
@@ -547,12 +551,12 @@ public class Playescript : MonoBehaviour
         {
             newposition.x = 0f;
         }
-        rdint = UnityEngine.Random.Range(-1, 2);
-        if (rdint == -1)
+        rdint = UnityEngine.Random.Range(0, 30);
+        if (rdint <= 9)
         {
             newposition.y = -0.6f;
         }
-        else if (rdint == 1)
+        else if (rdint >= 10 && rdint<=19)
         {
             newposition.y = 0.6f;
         }
@@ -565,7 +569,7 @@ public class Playescript : MonoBehaviour
             newposition.y = 0.6f;
         }
 
-        rdint = UnityEngine.Random.Range(0, 150);
+        rdint = UnityEngine.Random.Range(0, 130);
         GameObject newcube=null;
         if (rdint==33)
         {
@@ -601,13 +605,13 @@ public class Playescript : MonoBehaviour
     private GameObject SpawnMoving()
     {
 
-        int rdint = UnityEngine.Random.Range(-1, 1);
+        int rdint = UnityEngine.Random.Range(0, 30);
         Vector3 newposition = new Vector3(0, 0, basez);
-        if (rdint == -1)
+        if (rdint <=9)
         {
             newposition.x = -0.6f;
         }
-        else if (rdint == 0)
+        else if (rdint >= 10 && rdint<=19)
         {
             newposition.x = 0.6f;
         }
@@ -615,12 +619,12 @@ public class Playescript : MonoBehaviour
         {
             newposition.x = 0.6f;
         }
-        rdint = UnityEngine.Random.Range(-1, 1);
-        if (rdint == -1)
+        rdint = UnityEngine.Random.Range(0, 30);
+        if (rdint <=9)
         {
             newposition.y = -0.6f;
         }
-        else if (rdint == 0)
+        else if (rdint >= 10 && rdint <=19)
         {
             newposition.y = 0.6f;
         }
@@ -631,7 +635,6 @@ public class Playescript : MonoBehaviour
 
         rdint = UnityEngine.Random.Range(1, 3);
         GameObject newcube = Instantiate(MoveCube, newposition, Quaternion.identity);
-        Debug.Log(rdint);
         if (rdint >= 2)
         {
             rdint = 2;
@@ -646,19 +649,19 @@ public class Playescript : MonoBehaviour
     {
 
         List<GameObject> list = new List<GameObject>();
-        int rdint = UnityEngine.Random.Range(0, 4);
+        int rdint = UnityEngine.Random.Range(0, 40);
 
         Vector3 blacklistedpos = Vector3.zero;
 
-        if(rdint==0)
+        if(rdint<=9)
         {
             blacklistedpos = new Vector3(-0.6f, -0.6f, basez);
         }
-        else if (rdint == 1)
+        else if (rdint >= 10 && rdint <=19)
         {
             blacklistedpos = new Vector3(-0.6f, 0.6f, basez);
         }
-        else if (rdint == 2)
+        else if (rdint >= 20 && rdint<=29)
         {
             blacklistedpos = new Vector3(0.6f, -0.6f, basez);
         }
@@ -696,12 +699,12 @@ public class Playescript : MonoBehaviour
     {
         List<GameObject> list = new List<GameObject>();
         Vector3 newposition = new Vector3(0, 0, basez);
-        int rdint = UnityEngine.Random.Range(0, 3);
-        if (rdint == 0)
+        int rdint = UnityEngine.Random.Range(0, 30);
+        if (rdint <= 9)
         {
             newposition.x = -0.6f;
         }
-        else if (rdint == 1)
+        else if (rdint <= 19 && rdint>=9)
         {
             newposition.x = 0.6f;
         }
@@ -709,12 +712,12 @@ public class Playescript : MonoBehaviour
         {
             newposition.x = 0f;
         }
-        rdint = UnityEngine.Random.Range(0, 3);
-        if (rdint == 0)
+        rdint = UnityEngine.Random.Range(0, 30);
+        if (rdint <= 9)
         {
             newposition.y = -0.6f;
         }
-        else if (rdint == 1)
+        else if (rdint >= 10 && rdint <=19)
         {
             newposition.y = 0.6f;
         }
@@ -734,17 +737,17 @@ public class Playescript : MonoBehaviour
 
         Vector3 otherposition = new Vector3(0, 0, basez);
 
-        rdint = UnityEngine.Random.Range(0, 2);
+        rdint = UnityEngine.Random.Range(0, 20);
 
-        if(rdint == 0)
+        if(rdint <= 9)
         {
             otherposition.x = newposition.x;
 
 
-            rdint = UnityEngine.Random.Range(0, 2);
+            rdint = UnityEngine.Random.Range(0, 20);
             if(newposition.y ==-0.6f)
             {
-                if(rdint==0)
+                if(rdint<=9)
                 {
                     otherposition.y = 0f;
                 }
@@ -755,7 +758,7 @@ public class Playescript : MonoBehaviour
             }
             else if (newposition.y == 0.6f)
             {
-                if (rdint == 0)
+                if (rdint <= 9)
                 {
                     otherposition.y = 0f;
                 }
@@ -766,7 +769,7 @@ public class Playescript : MonoBehaviour
             }
             else
             {
-                if (rdint == 0)
+                if (rdint <= 9)
                 {
                     otherposition.y = 0.6f;
                 }
@@ -781,10 +784,10 @@ public class Playescript : MonoBehaviour
         {
             otherposition.y = newposition.y;
 
-            rdint = UnityEngine.Random.Range(0, 2);
+            rdint = UnityEngine.Random.Range(0, 20);
             if (newposition.x == -0.6f)
             {
-                if (rdint == 0 && otherposition.y !=0f)
+                if (rdint <= 9 && otherposition.y !=0f)
                 {
                     otherposition.x = 0f;
                 }
@@ -795,7 +798,7 @@ public class Playescript : MonoBehaviour
             }
             else if (newposition.x == 0.6f)
             {
-                if (rdint == 0 && otherposition.y != 0f)
+                if (rdint <= 9 && otherposition.y != 0f)
                 {
                     otherposition.x = 0f;
                 }
@@ -806,7 +809,7 @@ public class Playescript : MonoBehaviour
             }
             else
             {
-                if (rdint == 0)
+                if (rdint <= 9)
                 {
                     otherposition.x = 0.6f;
                 }
@@ -830,9 +833,9 @@ public class Playescript : MonoBehaviour
     {
         var list = new List<GameObject>();
 
-        int rdint = UnityEngine.Random.Range(0, 4);
+        int rdint = UnityEngine.Random.Range(0, 40);
 
-        if(rdint == 0)
+        if(rdint <= 9)
         {
             Vector3 newposition = new Vector3(0.6f, 0.6f, basez);
             GameObject obj1 = Instantiate(EnemyCube, newposition, Quaternion.identity);
@@ -852,7 +855,7 @@ public class Playescript : MonoBehaviour
             list.Add(obj3);
 
         }
-        else if (rdint == 1)
+        else if (rdint >= 10 && rdint <=19)
         {
 
             Vector3 newposition = new Vector3(-0.6f, 0.6f, basez);
@@ -872,7 +875,7 @@ public class Playescript : MonoBehaviour
             list.Add(obj2);
             list.Add(obj3);
 
-        } else if (rdint == 2)
+        } else if (rdint >= 20 && rdint <=29)
         {
 
             Vector3 newposition = new Vector3(0.6f, 0.6f, basez);
@@ -976,6 +979,26 @@ public class Playescript : MonoBehaviour
             bombheld--;
         }
         
+    }
+
+    void ManageOrientation(int direction) //direction : 0 up, 1 down, 2 left, 3 right
+    {
+        if(direction==0)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 180);
+        }
+        if(direction==1)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        if(direction ==2)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 90);
+        }
+        if(direction==3)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, -90);
+        }
     }
 
 }

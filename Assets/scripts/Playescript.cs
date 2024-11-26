@@ -97,10 +97,9 @@ public class Playescript : MonoBehaviour
 
     private int lastwall;
 
-    private void Awake()
-    {
-        Application.targetFrameRate = 60;
-    }
+    public float fixclock;
+
+    public GameObject PauseText;
 
     // Start is called before the first frame update
     void Start()
@@ -144,16 +143,30 @@ public class Playescript : MonoBehaviour
         {
 
             Time.timeScale = 0f;
+            PauseText.SetActive(true);
         }
         else
         {
             Time.timeScale = 1f;
+            PauseText.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (fixclock < 2)
+        {
+            Time.timeScale = (float)fixclock;
         }
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        
+
+
         if(!usebomb.action.IsPressed())
         {
             bombpressed = false;

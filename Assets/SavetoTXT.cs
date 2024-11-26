@@ -34,7 +34,9 @@ public class SavetoTXT : MonoBehaviour
     {
         string res = "{\n";
         int nbchildren = Ennemis.childCount;
+        Transform playertransform = GameObject.Find("playercube").transform;
         EnnemisList = new List<Transform>();
+        res += "\"(joueur)\":{\"coordinates\":[" + playertransform.position.x + "," + playertransform.position.y + "," + playertransform.position.z + "],\"lives\":"+playertransform.GetComponent<Playescript>().lives+",\"bombs\":" + playertransform.GetComponent<Playescript>().bombheld + "},\n";
         for (int i = 0; i < nbchildren; i++)
         {
             Transform t = Ennemis.GetChild(i);

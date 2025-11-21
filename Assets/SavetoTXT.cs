@@ -20,7 +20,7 @@ public class SavetoTXT : MonoBehaviour
     {
         if(stringtimer==0)
         {
-            SaveJSON(CreateString());
+            //SaveJSON(CreateString());
 
             stringtimer = 5;
         }
@@ -32,23 +32,28 @@ public class SavetoTXT : MonoBehaviour
 
     string CreateString()
     {
+
         string res = "{\n";
         int nbchildren = Ennemis.childCount;
         Transform playertransform = GameObject.Find("playercube").transform;
         EnnemisList = new List<Transform>();
-        res += "\"(joueur)\":{\"coordinates\":[" + playertransform.position.x + "," + playertransform.position.y + "," + playertransform.position.z + "],\"lives\":"+playertransform.GetComponent<Playescript>().lives+",\"bombs\":" + playertransform.GetComponent<Playescript>().bombheld + "},\n";
+        res += "\"joueur\":{\"coordinates\":[" + playertransform.position.x + "," + playertransform.position.y + "," + playertransform.position.z + "],\"lives\":"+playertransform.GetComponent<Playescript>().lives+",\"bombs\":" + playertransform.GetComponent<Playescript>().bombheld +",\"score\":"+playertransform.GetComponent<Playescript>().score+ "},\n";
         for (int i = 0; i < nbchildren; i++)
         {
             Transform t = Ennemis.GetChild(i);
-            res += "\"("+i+ ")\":{\"coordinates\":[" + t.position.x + "," + t.position.y + "," + t.position.z+"]";
+            res += "\"e"+i+ "\":{\"coordinates\":[" + t.position.x + "," + t.position.y + "," + t.position.z+"],\"velocity\":["+t.GetComponent<Rigidbody>().velocity.x+ "," + t.GetComponent<Rigidbody>().velocity.y +"," + t.GetComponent<Rigidbody>().velocity.z+"]";
 
             if (t.GetComponent<Enemyscript>().movedirection == 1)
             {
                 res += ",\"state\":\"x\"";
             }
-            else if (t.GetComponent<Enemyscript>().movedirection == 1)
+            else if (t.GetComponent<Enemyscript>().movedirection == 2)
             {
                 res += ",\"state\":\"y\"";
+            }
+            else if (t.GetComponent<Enemyscript>().power!="")
+            {
+                res += ",\"state\":\""+ t.GetComponent<Enemyscript>().power + "\"";
             }
             else
             {

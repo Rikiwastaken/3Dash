@@ -101,6 +101,8 @@ public class Playescript : MonoBehaviour
 
     public GameObject PauseText;
 
+    public ParticleSystem PS;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -265,7 +267,7 @@ public class Playescript : MonoBehaviour
 
         leveltxt.text = "Level : " + (level-1);
 
-        bombtxt.text = "x" + bombheld;
+        bombtxt.text = "x" + bombheld+" (space)";
 
         ManageMovement();
 
@@ -299,6 +301,11 @@ public class Playescript : MonoBehaviour
         }
 
         level = (int)(generation / 9) + 2;
+
+        var PSemission = PS.emission;
+
+
+        PSemission.rateOverTime = (level + 1) * 10;
 
     }
 

@@ -22,5 +22,7 @@ public class textscript : MonoBehaviour
             transform.Find("Speed").gameObject.SetActive(false);
             transform.Find("Buster").gameObject.SetActive(false);
         }
+        transform.rotation = Quaternion.identity;
+
     }
 }

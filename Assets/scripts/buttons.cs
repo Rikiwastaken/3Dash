@@ -5,6 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class buttons : MonoBehaviour
 {
+
+    private Transform musicHolder;
+
+    private void Start()
+    {
+        musicHolder = Musicscript.instance.transform;
+        for(int i = 0; i < musicHolder.childCount; i++)
+        {
+            if(Musicscript.instance.currentmusicindex!=i)
+            {
+                musicHolder.GetChild(i).GetComponent<AudioSource>().mute = true;
+            }
+            else
+            {
+                musicHolder.GetChild(i).GetComponent<AudioSource>().mute = false;
+            }
+        }
+    }
+
     public void Onquit()
     {
         Application.Quit();
@@ -17,16 +36,15 @@ public class buttons : MonoBehaviour
 
     public void ChangeMusic()
     {
-        if(GameObject.Find("Music1").GetComponent<AudioSource>().mute==true)
+        musicHolder.GetChild(Musicscript.instance.currentmusicindex).GetComponent<AudioSource>().mute = true;
+
+        Musicscript.instance.currentmusicindex++;
+        if(Musicscript.instance.currentmusicindex >= musicHolder.childCount)
         {
-            GameObject.Find("Music1").GetComponent<AudioSource>().mute = false;
-            GameObject.Find("Music2").GetComponent<AudioSource>().mute = true;
+            Musicscript.instance.currentmusicindex = 0;
         }
-        else
-        {
-            GameObject.Find("Music1").GetComponent<AudioSource>().mute = true;
-            GameObject.Find("Music2").GetComponent<AudioSource>().mute = false;
-        }
+
+        musicHolder.GetChild(Musicscript.instance.currentmusicindex).GetComponent<AudioSource>().mute = false;
     }
 
     public void Mute()

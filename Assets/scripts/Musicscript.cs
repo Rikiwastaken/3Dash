@@ -3,8 +3,19 @@ using UnityEngine.SceneManagement;
 
 public class Musicscript : MonoBehaviour
 {
+    public static Musicscript instance;
+
+    public int currentmusicindex = 0;
 
     public int timefordistrotion;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
